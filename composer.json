@@ -1,7 +1,7 @@
 {
     "name": "hsldymq/sendcloud-library",
     "description": "SendCloud API简易调用库",
-    "keywords": ["SendCloud", "Email", "邮件"],
+    "keywords": ["sendcloud", "email", "mail"],
     "version": "0.1.0",
     "authors": [
         {
