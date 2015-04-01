@@ -26,13 +26,13 @@ abstract class AbstractRequest
 
     public function setModule($module)
     {
-        $this->$module = is_string($module) ? $module : $this->$module;
+        $this->module = is_string($module) ? $module : $this->$module;
         $this->prepareUrl();
     }
 
     public function setAction($action)
     {
-        $this->$action = is_string($action) ? $action : $this->$action;
+        $this->action = is_string($action) ? $action : $this->$action;
         $this->prepareUrl();
     }
 

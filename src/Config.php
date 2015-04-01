@@ -8,7 +8,7 @@ class Config
 
     public static function init()
     {
-        $_config = require dir(__DIR__) . "/config/config.php";
+        $_config = require dirname(__DIR__) . "/config/config.php";
         self::$config = array_merge(self::$config, $_config);
     }
 

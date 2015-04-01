@@ -36,8 +36,10 @@ class WebAPIRequest extends AbstractRequest
             CURLOPT_POSTFIELDS => $this->data
         );
         curl_setopt_array($ch, $cOptions);
+        $ret = curl_exec($ch);
+        curl_close($ch);
 
-        return $this->parseReturnData(curl_exec($ch));
+        return $this->parseReturnData($ret);
 
     }
 

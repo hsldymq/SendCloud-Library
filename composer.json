@@ -1,8 +1,9 @@
 {
     "name": "hsldymq/sendcloud-library",
     "description": "SendCloud API简易调用库",
-    "keywords": ["sendcloud", "email", "mail"],
+    "keywords": ["sendcloud", "email"],
     "version": "0.1.0",
+    "license": "WTFPL",
     "authors": [
         {
             "name": "Haibin Long",
