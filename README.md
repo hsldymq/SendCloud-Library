@@ -17,7 +17,7 @@
 ##3.安装
 有两种方法将它集成到你自己的项目:
 
-###1. composer
+####1. composer
 在composer.json中写入以下:
 
 { "require": { "hsldymq/sendcloud-library": "dev-master" } }
@@ -32,14 +32,14 @@ windows:
 
 composer的用法不多讲,请狂点[这里](http://docs.phpcomposer.com/00-intro.md).
 
-###2. git
+####2. git
 git clone https://github.com/hsldymq/SendCloud-Library.git
 
 或者
 
 git clone https://git.coding.net/hsldymq/SendCloud-Library.git
 
-###3. 没有了...
+####3. 没有了...
 
 
 ##4.使用
