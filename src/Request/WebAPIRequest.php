@@ -8,7 +8,7 @@ use SendCloud\ReturnValue as RV;
 class WebAPIRequest extends AbstractRequest
 {
     /**
-     * @var array 请求数据
+     * @var array 请求参数集
      */
     private $data = array();
 
@@ -18,9 +18,9 @@ class WebAPIRequest extends AbstractRequest
     }
 
     /**
-     * 发送API请求
+     * 发送API请求.
      *
-     * 允许重复发送请求
+     * 允许重复发送请求.
      *
      * @return null|array 请求参数错误将返回null
      */
@@ -40,30 +40,72 @@ class WebAPIRequest extends AbstractRequest
         curl_close($ch);
 
         return $this->parseReturnData($ret);
-
     }
 
     /**
-     * 准备请求数据.
+     * 准备请求参数.
      *
-     * 在发送数据前,允许对用户自定义的请求数据进行替换
+     * 在发送请求前,允许对用户自定义的参数或模板参数进行替换
      * 当用户数据中缺乏必要字段时,方法将会从配置中取出预先设置的值进行覆盖.
      *
-     * @param array $data POST data
+     * @param string|array $params 请求参数数组或模板名, 默认取得默认请求模板
      *
      * @return void
      */
-    public function prepareData(array $data)
+    public function prepareRequest($params = 'default')
     {
-        $data['api_key'] = Config::get('API_KEY');
-        $data['api_user'] = isset($data['api_user']) ? $data['api_user'] : Config::get('API_KEY');
-        $this->data = $data;
+        if (is_string($params)) {
+            // 载入请求模板
+            $params = RequestTemplate::loadTemplate($this->getModule(), $this->getAction(), $params);
+        } elseif ( ! is_array($params)) {
+            $params = array();
+        }
+
+        $params['api_key'] = isset($params['api_key']) ? $params['api_key'] : Config::get('API_KEY');
+        $params['api_user'] = isset($params['api_user']) ? $params['api_user'] : Config::get('API_USER');
+        $this->data = $params;
+
+        return $this;
+    }
+
+    /**
+     * 设置请求参数.
+     *
+     * @param string $name 参数名
+     * @param string $val 参数值
+     *
+     * @return void
+     */
+    public function setParam($name, $val)
+    {
+        if ( ! is_string($name) || ! is_string($val)) {
+            return;
+        }
+        $this->data[$name] = $val;
+
+        return $this;
+    }
+
+    /**
+     * 返回请求参数的值.
+     *
+     * @param string $name 参数名
+     *
+     * @return mixed 参数不存在返回null
+     */
+    public function getParam($name)
+    {
+        if ( ! is_string($name) || ! isset($this->data[$name])) {
+            return null;
+        }
+
+        return $this->data[$name];
     }
 
     /**
      * 设置请求地址.
      *
-     * 每当用户设置请求的API模块与行为时,请求地址将发生变化
+     * 每当用户设置请求的API模块与行为时,请求地址将发生变化.
      *
      * @return void
      */
@@ -74,7 +116,7 @@ class WebAPIRequest extends AbstractRequest
     }
 
     /**
-     * 根据格式将返回数据转为关联数组
+     * 根据格式将返回数据转为关联数组.
      *
      * @param mixed $data
      *

@@ -40,12 +40,12 @@ class SendCloud
      * 准备请求数据,设置调用的模块与行为,创建请求对象.
      *
      * @param string|null $module
-     * @param null $action
-     * @param array $data
+     * @param string|null $action
+     * @param string|array $data
      *
-     * @return null|object 返回请求对象,配置有误则返回null
+     * @return null|\SendCloud\Request 返回请求对象,配置有误则返回null
      */
-    public function prepare($module, $action, $data = array())
+    public function prepare($module, $action, $data = 'default')
     {
         $request = $this->_createRequest($this->config("REQUEST"));
         if ( ! is_object($request)) {
@@ -53,13 +53,13 @@ class SendCloud
         }
         $request->setModule($module);
         $request->setAction($action);
-        $request->prepareData($data);
+        $request->prepareRequest($data);
 
         return $request;
     }
 
     /**
-     * 创建请求对象
+     * 创建请求对象.
      *
      * @param string $type 请求类型
      *
@@ -77,6 +77,7 @@ class SendCloud
             default:
                 $obj = null;
         }
+
         return $obj;
     }
 }

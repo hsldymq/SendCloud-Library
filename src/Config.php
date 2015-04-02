@@ -8,8 +8,22 @@ class Config
 
     public static function init()
     {
-        $_config = require dirname(__DIR__) . "/config/config.php";
+        $_config = require self::path("config") . DIRECTORY_SEPARATOR . "config.php";
         self::$config = array_merge(self::$config, $_config);
+    }
+
+    /**
+     * 返回指定目录名的绝对路径.
+     *
+     * 目录名相对于库根目录.
+     *
+     * @param string $directory 目录名
+     *
+     * @return string 绝对路径
+     */
+    public static function path($directory)
+    {
+        return dirname(__DIR__) . DIRECTORY_SEPARATOR . $directory;
     }
 
     /**

@@ -12,6 +12,11 @@ class SMTPRequest extends AbstractRequest
         $this->baseUrl = "smtpcloud.sohu.com";
     }
 
+    public function prepareRequest($data)
+    {
+
+    }
+
     protected function prepareUrl()
     {
 
