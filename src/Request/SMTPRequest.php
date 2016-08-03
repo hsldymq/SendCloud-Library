@@ -1,5 +1,4 @@
 <?php
-
 namespace SendCloud\Request;
 
 class SMTPRequest extends AbstractRequest
@@ -8,17 +7,11 @@ class SMTPRequest extends AbstractRequest
 
     public function __construct()
     {
-        $this->port = 80;
-        $this->baseUrl = "smtpcloud.sohu.com";
+        $this->port    = 80;
+        $this->baseUrl = 'smtpcloud.sohu.com';
     }
 
-    public function prepareRequest($data)
-    {
-
-    }
-
-    protected function prepareUrl()
-    {
-
-    }
+    public function setParam($name, $val) {}
+    public function prepareRequest($data) {}
+    protected function prepareUrl() {}
 }

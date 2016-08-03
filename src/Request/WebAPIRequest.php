@@ -1,5 +1,4 @@
 <?php
-
 namespace SendCloud\Request;
 
 use SendCloud\Config as Config;
@@ -10,11 +9,11 @@ class WebAPIRequest extends AbstractRequest
     /**
      * @var array 请求参数集
      */
-    private $data = array();
+    private $data = [];
 
     public function __construct()
     {
-        $this->baseUrl = "http://sendcloud.sohu.com/webapi/";
+        $this->baseUri = 'http://www.sendcloud.net/webapi/';
     }
 
     /**
@@ -26,15 +25,15 @@ class WebAPIRequest extends AbstractRequest
      */
     public function send()
     {
-        $ch = curl_init($this->requestUrl);
+        $ch = curl_init($this->requestUri);
 
-        $cOptions = array(
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+        $cOptions = [
+            CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_URL => $this->requestUrl,
-            CURLOPT_POSTFIELDS => $this->data
-        );
+            CURLOPT_CUSTOMREQUEST  => 'POST',
+            CURLOPT_URL            => $this->requestUri,
+            CURLOPT_POSTFIELDS     => $this->data,
+        ];
         curl_setopt_array($ch, $cOptions);
         $ret = curl_exec($ch);
         curl_close($ch);
@@ -50,20 +49,20 @@ class WebAPIRequest extends AbstractRequest
      *
      * @param string|array $params 请求参数数组或模板名, 默认取得默认请求模板
      *
-     * @return void
+     * @return $this
      */
     public function prepareRequest($params = 'default')
     {
         if (is_string($params)) {
             // 载入请求模板
             $params = RequestTemplate::loadTemplate($this->getModule(), $this->getAction(), $params);
-        } elseif ( ! is_array($params)) {
-            $params = array();
+        } elseif (!is_array($params)) {
+            $params = [];
         }
 
-        $params['api_key'] = isset($params['api_key']) ? $params['api_key'] : Config::get('API_KEY');
+        $params['api_key']  = isset($params['api_key']) ? $params['api_key'] : Config::get('API_KEY');
         $params['api_user'] = isset($params['api_user']) ? $params['api_user'] : Config::get('API_USER');
-        $this->data = $params;
+        $this->data         = $params;
 
         return $this;
     }
@@ -74,11 +73,11 @@ class WebAPIRequest extends AbstractRequest
      * @param string $name 参数名
      * @param string $val 参数值
      *
-     * @return void
+     * @return void|$this
      */
     public function setParam($name, $val)
     {
-        if ( ! is_string($name) || ! is_string($val)) {
+        if (!is_string($name) || !is_string($val)) {
             return;
         }
         $this->data[$name] = $val;
@@ -95,7 +94,7 @@ class WebAPIRequest extends AbstractRequest
      */
     public function getParam($name)
     {
-        if ( ! is_string($name) || ! isset($this->data[$name])) {
+        if (!is_string($name) || !isset($this->data[$name])) {
             return null;
         }
 
@@ -111,8 +110,8 @@ class WebAPIRequest extends AbstractRequest
      */
     protected function prepareUrl()
     {
-        $interface = implode(".", array($this->module, $this->action, Config::get('FORMAT')));
-        $this->requestUrl = $this->baseUrl . $interface;
+        $interface        = implode('.', [$this->module, $this->action, Config::get('FORMAT')]);
+        $this->requestUri = $this->baseUri.$interface;
     }
 
     /**
@@ -124,12 +123,12 @@ class WebAPIRequest extends AbstractRequest
      */
     private function parseReturnData($data)
     {
-        $format = strtolower(Config::get("FORMAT"));
+        $format = strtolower(Config::get('FORMAT'));
         switch ($format) {
-            case "json":
+            case 'json':
                 return RV\Json::parse($data);
                 break;
-            case "xml":
+            case 'xml':
                 return RV\Xml::parse($data);
                 break;
         }

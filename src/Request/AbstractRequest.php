@@ -1,5 +1,4 @@
 <?php
-
 namespace SendCloud\Request;
 
 abstract class AbstractRequest
@@ -7,22 +6,30 @@ abstract class AbstractRequest
     /**
      * @var string SendCloud接口基础地址
      */
-    protected $baseUrl;
+    protected $baseUri;
 
     /**
      * @var string 实际请求地址
      */
-    protected $requestUrl;
+    protected $requestUri;
 
     /**
      * @var string 模块
      */
-    protected $module = "";
+    protected $module = '';
 
     /**
      * @var string 动作
      */
-    protected $action = "";
+    protected $action = '';
+
+    /**
+     * 设置请求参数
+     *
+     * @param string $name 参数名
+     * @param string $val 参数值
+     */
+    abstract public function setParam($name, $val);
 
     /**
      * WEBAPI获取请求的模块
@@ -39,11 +46,11 @@ abstract class AbstractRequest
      *
      * @param string $module 模块名
      *
-     * @return void
+     * @return $this
      */
     public function setModule($module)
     {
-        $this->module = is_string($module) ? $module : $this->$module;
+        $this->module = is_string($module) ? $module : $this->module;
         $this->prepareUrl();
 
         return $this;
@@ -64,11 +71,11 @@ abstract class AbstractRequest
      *
      * @param string $action 动作名
      *
-     * @return void
+     * @return $this
      */
     public function setAction($action)
     {
-        $this->action = is_string($action) ? $action : $this->$action;
+        $this->action = is_string($action) ? $action : $this->action;
         $this->prepareUrl();
 
         return $this;
@@ -80,14 +87,6 @@ abstract class AbstractRequest
      * @param string|array $data 关联数组
      */
     abstract public function prepareRequest($data);
-
-    /**
-     * 设置请求参数
-     *
-     * @param string $name 参数名
-     * @param string $val 参数值
-     */
-    abstract public function setParam($name, $val);
 
     /**
      * 生成API请求URL

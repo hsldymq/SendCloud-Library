@@ -2,7 +2,7 @@
     "name": "hsldymq/sendcloud-library",
     "description": "SendCloud API简易调用库",
     "keywords": ["sendcloud", "email"],
-    "version": "0.2.0",
+    "version": "0.2.1",
     "license": "WTFPL",
     "authors": [
         {
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SendCloud\\": "src"
+            "SendCloud\\": "./src"
         }
     }
 }

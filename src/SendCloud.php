@@ -7,12 +7,10 @@
  * 使用SendCloud Library需要用户的PHP版本 >= 5.3
  *
  */
-
 namespace SendCloud;
 
 class SendCloud
 {
-
     public function __construct()
     {
         Config::init();
@@ -43,12 +41,12 @@ class SendCloud
      * @param string|null $action
      * @param string|array $data
      *
-     * @return null|\SendCloud\Request 返回请求对象,配置有误则返回null
+     * @return null|\SendCloud\Request\AbstractRequest 返回请求对象,配置有误则返回null
      */
     public function prepare($module, $action, $data = 'default')
     {
-        $request = $this->_createRequest($this->config("REQUEST"));
-        if ( ! is_object($request)) {
+        $request = $this->_createRequest($this->config('REQUEST'));
+        if (!is_object($request)) {
             return null;
         }
         $request->setModule($module);
@@ -63,16 +61,16 @@ class SendCloud
      *
      * @param string $type 请求类型
      *
-     * @return \SendCloud\Request\SMTPReqeust|\SendCloud\Request\WebAPIRequest
+     * @return \SendCloud\Request\SMTPRequest|\SendCloud\Request\WebAPIRequest
      */
     private function _createRequest($type)
     {
         switch (strtolower($type)) {
-            case "webapi":
+            case 'webapi':
                 $obj = new Request\WebAPIRequest();
                 break;
-            case "smtp":
-                $obj = new Request\SMTPReqeust();
+            case 'smtp':
+                $obj = new Request\SMTPRequest();
                 break;
             default:
                 $obj = null;
